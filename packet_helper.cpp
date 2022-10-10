@@ -6,7 +6,7 @@
 // data structure for packet
 // using big-endian
 // 4 bytes : packet length
-// 4 bytes : timestemp
+// 4 bytes : timestamp
 // 4 bytes : name length
 // n bytes : name
 // m bytes : message
@@ -19,9 +19,9 @@ void packet_helper::send_packet(SOCKET socket, const chat_packet &packet) {
     packet_len = htonl(packet_len);
     raw_data.append(reinterpret_cast<const char *>(&packet_len), sizeof(packet_len));
 
-    // timestemp
-    uint32_t timestemp = htonl(packet.get_timestamp());
-    raw_data.append(reinterpret_cast<const char *>(&timestemp), sizeof(timestemp));
+    // timestamp
+    uint32_t timestamp = htonl(packet.get_timestamp());
+    raw_data.append(reinterpret_cast<const char *>(&timestamp), sizeof(timestamp));
 
     // name length
     uint32_t name_length = htonl(packet.get_name().length());
