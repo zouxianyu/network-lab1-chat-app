@@ -9,6 +9,8 @@ class chat_handler {
 
     void show_packet(const chat_packet &packet) const;
 
+    void show_input_cmd() const;
+
 public:
     explicit chat_handler(SOCKET socket);
 

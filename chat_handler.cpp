@@ -6,6 +6,9 @@
 #include "packet_helper.h"
 #include "chat_handler.h"
 
+// global name variable in main.cpp
+extern std::string g_name;
+
 chat_handler::chat_handler(SOCKET socket)
         : socket_(socket) {}
 
@@ -29,6 +32,10 @@ void chat_handler::show_packet(const chat_packet &packet) const {
     std::cout << std::endl;
 }
 
+void chat_handler::show_input_cmd() const {
+    std::cout << g_name << " (CHAT)> ";
+}
+
 void chat_handler::run() {
     std::thread recv_thread([this] {
         try {
@@ -37,7 +44,11 @@ void chat_handler::run() {
                 chat_packet packet = packet_helper::receive_packet(socket_);
 
                 // handle the packet
+                // clear the current line and show the packet
+                std::cout << "\r\033[K";
                 show_packet(packet);
+                // show the input command again
+                show_input_cmd();
             }
         } catch (const std::exception &e) {
 //            std::cerr << e.what() << std::endl;
@@ -45,16 +56,15 @@ void chat_handler::run() {
     });
 
     try {
-        // global name variable in main.cpp
-        extern std::string g_name;
-
         while (true) {
+            // show > at first
+            show_input_cmd();
+
             // get message
             std::string message;
-            std::getline(std::cin, message);
-            if (message.empty()) {
-                continue;
-            }
+            do {
+                std::getline(std::cin, message);
+            } while(message.empty());
 
             // check if exit
             if (message == "!exit") {
@@ -74,7 +84,7 @@ void chat_handler::run() {
             packet_helper::send_packet(socket_, packet);
 
             // move up the cursor and show the current message
-            std::cout << "\033[1A";
+            std::cout << "\033[1A\r\033[K";
             show_packet(packet);
         }
     } catch (const std::exception &e) {
@@ -83,4 +93,5 @@ void chat_handler::run() {
     recv_thread.join();
     std::cout << "session end" << std::endl;
 }
+
 
