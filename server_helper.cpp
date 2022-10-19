@@ -35,7 +35,7 @@ void server_helper::run() {
     std::thread thread_cmd([s, this]{
         std::string cmd;
         while(true) {
-            std::cout << " (SERVER)> " << std::flush;
+            std::cout << "(SERVER)> " << std::flush;
             std::cin >> cmd;
             if (cmd == "!exit") {
                 closesocket(s);
