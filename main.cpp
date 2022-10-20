@@ -60,7 +60,7 @@ int main() {
     bool exit = false;
     while (!exit) {
         // show > at first
-        std::cout << g_name << " (CMD)> ";
+        std::cout << g_name << " (CMD)> " << std::flush;
 
         // get command
         std::string cmd;

@@ -33,7 +33,7 @@ void chat_handler::show_packet(const chat_packet &packet) const {
 }
 
 void chat_handler::show_input_cmd() const {
-    std::cout << g_name << " (CHAT)> ";
+    std::cout << g_name << " (CHAT)> " << std::flush;
 }
 
 void chat_handler::run() {
