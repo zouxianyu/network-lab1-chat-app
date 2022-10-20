@@ -1,10 +1,11 @@
 #include <iostream>
+#include <utility>
 #include <windows.h>
 #include "chat_handler.h"
 #include "client_helper.h"
 
-client_helper::client_helper(const std::string &ip, int port)
-        : ip_(ip), port_(port) {}
+client_helper::client_helper(std::string ip, int port)
+        : ip_(std::move(ip)), port_(port) {}
 
 void client_helper::run() {
     SOCKET s = socket(AF_INET, SOCK_STREAM, 0);

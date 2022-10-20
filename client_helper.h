@@ -7,7 +7,7 @@ class client_helper {
     std::string ip_;
     int port_;
 public:
-    client_helper(const std::string &ip, int port);
+    client_helper(std::string ip, int port);
 
     void run();
 };

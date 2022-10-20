@@ -1,13 +1,14 @@
 #include <cstdint>
+#include <utility>
 #include "chat_packet.h"
 
 chat_packet::chat_packet(
         uint32_t timestamp,
-        const std::string &name,
-        const std::string &message
+        std::string name,
+        std::string message
 ) : timestamp_(timestamp),
-    name_(name),
-    message_(message) {}
+    name_(std::move(name)),
+    message_(std::move(message)) {}
 
 uint32_t chat_packet::get_timestamp() const {
     return timestamp_;

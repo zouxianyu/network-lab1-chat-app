@@ -12,14 +12,17 @@ class chat_packet {
 public:
     chat_packet(
             uint32_t timestamp,
-            const std::string &name,
-            const std::string &message
+            std::string name,
+            std::string message
     );
 
+    [[nodiscard]]
     uint32_t get_timestamp() const;
 
+    [[nodiscard]]
     std::string get_name() const;
 
+    [[nodiscard]]
     std::string get_message() const;
 };
 

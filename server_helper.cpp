@@ -1,7 +1,6 @@
 #include <iostream>
 #include <thread>
 #include <windows.h>
-#include "chat_handler.h"
 #include "server_helper.h"
 
 server_helper::server_helper(int port)
@@ -38,13 +37,18 @@ void server_helper::run() {
             std::cout << "(SERVER)> " << std::flush;
             std::cin >> cmd;
             if (cmd == "!exit") {
+                // close the server socket
                 closesocket(s);
+
+                // close all the client sockets
                 {
                     std::lock_guard lock(m_);
                     for (auto each_client : clients_) {
                         closesocket(each_client);
                     }
                 }
+
+                // the thread will exit
                 break;
             } else {
                 std::cout << "unknown command" << std::endl;
@@ -71,10 +75,11 @@ void server_helper::run() {
             // handle the connection
             char buf[512];
             int n;
-            // if the n <= 0, the connection is dead
+            // if n <= 0, the connection is dead
             while((n = recv(client, buf, sizeof(buf), 0)) >= 0) {
                 std::lock_guard lock(m_);
                 for (auto each_client : clients_) {
+                    // skip the sender client
                     if (each_client == client) {
                         continue;
                     }
@@ -90,8 +95,12 @@ void server_helper::run() {
                 clients_.erase(client);
             }
 
+            // close the client socket if the loop exit,
+            // which means the client exit
             closesocket(client);
         });
+
+        // detach the thread, so the server can serve new clients
         t.detach();
     }
 
