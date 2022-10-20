@@ -18,6 +18,9 @@ static void show_help_info() {
     std::cout << "============== chat mode ===============" << std::endl;
     std::cout << "!exit : end chat session" << std::endl;
     std::cout << std::endl;
+    std::cout << "============= server mode ==============" << std::endl;
+    std::cout << "!exit : stop server" << std::endl;
+    std::cout << std::endl;
 }
 
 static void listen_parser() {
